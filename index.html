@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Termo</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <h1>Jogo Termo</h1>
+    </header>
+
+    <section>
+        <label for="letras">Escolha a quantidade de letras (3-7): </label>
+        <input type="number" id="letras" min="3" max="7">
+        <button onclick="iniciarJogo()">Iniciar Jogo</button>
+        <div id="palavraOculta"></div>
+        <div id="caixas" class="caixas-container"></div>
+        <button onclick="verificarPalavra()">Verificar</button>
+        <div id="resultado"></div>
+    </section>
+
+    <script src="script.js"></script>
+</body>
+</html>

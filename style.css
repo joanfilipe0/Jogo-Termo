@@ -1,0 +1,36 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+h1 {
+    color: #333;
+}
+
+label {
+    margin-top: 10px;
+    display: block;
+}
+
+input, button {
+    margin: 5px;
+}
+
+#resultado {
+    margin-top: 10px;
+    font-weight: bold;
+    color: #007bff;
+}
+.linha-caixas {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+}
+
+.caixa-letra {
+    width: 40px; /* Ajuste o tamanho conforme necessário */
+    height: 40px; /* Ajuste o tamanho conforme necessário */
+    margin: 0 ; /* Ajuste a margem conforme necessário */
+    text-align: center;
+    font-size: 1.5em; /* Ajuste o tamanho da fonte conforme necessário */
+}
