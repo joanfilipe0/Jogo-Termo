@@ -8,7 +8,7 @@ function iniciarJogo() {
     const numLetras = document.getElementById("letras").value;
     if (numLetras >= 3 && numLetras <= 7) {
         palavraSecreta = gerarPalavra(numLetras);
-        exibirPalavraOculta();
+        //exibirPalavraOculta();
         criarCaixas(numLetras);
         resetarJogo();
     } else {
@@ -100,7 +100,7 @@ function verificarPalavra() {
         acertos += letraCorreta ? 1 : 0;
     }
 
-    exibirPalavraOculta();
+    //exibirPalavraOculta();
 
     if (acertos === palavraSecreta.length) {
         resultadoElement.textContent = `Parabéns! Você acertou a palavra em ${tentativas} tentativas.`;
