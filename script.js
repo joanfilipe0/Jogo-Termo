@@ -11,8 +11,6 @@ function iniciarJogo() {
         exibirPalavraOculta();
         criarCaixas(numLetras);
         resetarJogo();
-        // Definir o número de tentativas
-        MAX_TENTATIVAS = 7;
     } else {
         alert("Por favor, escolha um número de letras entre 3 e 7.");
     }
@@ -60,6 +58,7 @@ function criarCaixas(numLetras) {
 
         caixasElement.appendChild(linha);
     }
+    desbloquearFileiras();
 }
 
 function resetarJogo() {
@@ -77,7 +76,7 @@ function validarEntrada() {
 }
 
 function verificarPalavra() {
-    const caixas = document.getElementsByClassName("caixa-letra");
+    const caixas = document.querySelectorAll(".linha-caixas")[tentativas].getElementsByClassName("caixa-letra");
     const resultadoElement = document.getElementById("resultado");
 
     let tentativa = "";
@@ -107,7 +106,20 @@ function verificarPalavra() {
         resultadoElement.textContent = `Parabéns! Você acertou a palavra em ${tentativas} tentativas.`;
     } else {
         resultadoElement.textContent = `Tentativa ${tentativas}: ${resultado}`;
+        desbloquearFileiras();
     }
+  
+}
 
-   
+function desbloquearFileiras() {
+    const caixasContainer = document.getElementById("caixas");
+    const linhas = caixasContainer.getElementsByClassName("linha-caixas");
+
+    for (let i = 0; i < MAX_TENTATIVAS; i++) {
+        const linha = linhas[i];
+        if (linha) {
+            linha.classList.remove("linha-bloqueada");
+            linha.classList.add(i !== tentativas ? "linha-bloqueada" : "linha-disponivel");
+        }
+    }
 }

@@ -41,3 +41,14 @@ input, button {
     align-items: center;
     justify-content: center;
 }
+
+.linha-bloqueada {
+    pointer-events: none; /* Impede a interação com as caixas */
+    opacity: 0.5; /* Reduz a opacidade para indicar que está bloqueada */
+    background-color: #ddd; /* Fundo cinza para indicar que está bloqueada */
+}
+
+.linha-disponivel {
+    /* Adicione estilos adicionais para indicar que está disponível, se desejar */
+    background-color: #fff; /* Fundo branco para indicar que está disponível */
+}
