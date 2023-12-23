@@ -52,3 +52,11 @@ input, button {
     /* Adicione estilos adicionais para indicar que está disponível, se desejar */
     background-color: #fff; /* Fundo branco para indicar que está disponível */
 }
+
+.caixa-correta {
+    background-color: #8aff8a; /* Fundo verde para indicar a letra correta */
+}
+
+.caixa-incorreta {
+    background-color: #ff8a8a; /* Fundo vermelho para indicar a letra incorreta */
+}

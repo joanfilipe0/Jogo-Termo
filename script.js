@@ -8,7 +8,6 @@ function iniciarJogo() {
     const numLetras = document.getElementById("letras").value;
     if (numLetras >= 3 && numLetras <= 7) {
         palavraSecreta = gerarPalavra(numLetras);
-        //exibirPalavraOculta();
         criarCaixas(numLetras);
         resetarJogo();
     } else {
@@ -16,10 +15,11 @@ function iniciarJogo() {
     }
 }
 const palavrasPorComprimento = {
-    3: ["sol", "lua", "mar"],
-    4: ["casa", "papel", "água"],
-    5: ["fogão", "livro"],
-    7: ["teclado", "guitarra"]
+    3: ["sol", "lua", "mar", "sol", "som", "luz", "cor", "paz", "fim", "sal"],
+    4: ["casa", "mala", "fala", "pato", "cama", "roda", "vira", "fogo", "ruim", "alto"],
+    5: ["fogao", "livro", "fundo", "bola", "lente", "vazio", "comer", "forca", "garfo", "abrao"],
+    6: ["liquor", "cifose", "aereo", "ubere", "esofago", "proton", "histan", "ibero", "impeto", "quorum"],
+    7: ["teclado", "guitarra", "telefone", "quintal", "agulha", "parafus", "chaveir", "ventila", "abridor", "pratele"]
     // Adicione mais palavras conforme necessário
 };
 
@@ -100,15 +100,29 @@ function verificarPalavra() {
         acertos += letraCorreta ? 1 : 0;
     }
 
-    //exibirPalavraOculta();
+    // Colorir as caixas de acordo com a Verificação
+    console.log("Tentativa atual:", tentativas);
+    const caixasAtuais = document.querySelectorAll(".linha-caixas")[tentativas-1].getElementsByClassName("caixa-letra");
+    for (let x = 0; x < caixasAtuais.length; x++) {
+        const letraAtual = caixasAtuais[x].value;
+        const letraCorreta = palavraSecreta[x] === letraAtual;
 
+        caixasAtuais[x].classList.add(letraCorreta ? "caixa-correta" : "caixa-incorreta");
+    }
+    
     if (acertos === palavraSecreta.length) {
         resultadoElement.textContent = `Parabéns! Você acertou a palavra em ${tentativas} tentativas.`;
     } else {
         resultadoElement.textContent = `Tentativa ${tentativas}: ${resultado}`;
         desbloquearFileiras();
+        if (tentativas === MAX_TENTATIVAS) {
+            resultadoElement.textContent = "Você perdeu! Tente novamente.";
+            // Adicione outras ações que desejar após o jogo ser perdido
+        }
     }
-  
+
+
+
 }
 
 function desbloquearFileiras() {
