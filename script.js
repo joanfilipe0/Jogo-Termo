@@ -84,6 +84,7 @@ function verificarPalavra() {
         tentativa += caixas[i].value;
     }
 
+    // Verifica se Contém apenas letras
     if (!tentativa.match(letrasPermitidas)) {
         alert("Por favor, digite apenas letras.");
         return;
@@ -101,19 +102,39 @@ function verificarPalavra() {
     }
 
     // Colorir as caixas de acordo com a Verificação
-    console.log("Tentativa atual:", tentativas);
     const caixasAtuais = document.querySelectorAll(".linha-caixas")[tentativas-1].getElementsByClassName("caixa-letra");
+
+    // Verificar se alguma caixa está vazia
+    for (let i = 0; i < caixasAtuais.length; i++) {
+        if (caixasAtuais[i].value.trim() === "") {
+        tentativas--;
+        alert("Por favor, preencha todas as caixas.");
+        return;
+        }
+    }
+
     for (let x = 0; x < caixasAtuais.length; x++) {
         const letraAtual = caixasAtuais[x].value;
         const letraCorreta = palavraSecreta[x] === letraAtual;
-
-        caixasAtuais[x].classList.add(letraCorreta ? "caixa-correta" : "caixa-incorreta");
-    }
     
+        if (letraCorreta) {
+            // Se a letra está correta na posição
+            caixasAtuais[x].classList.add("caixa-correta");
+        } else {
+            // Se a letra está incorreta ou na posição errada
+            caixasAtuais[x].classList.add("caixa-incorreta");
+    
+            if (palavraSecreta.includes(letraAtual)) {
+                // Se a letra está na palavra, mas na posição errada
+                caixasAtuais[x].classList.add("letra-na-posicao-errada");
+            }
+        }
+    }
+
     if (acertos === palavraSecreta.length) {
         resultadoElement.textContent = `Parabéns! Você acertou a palavra em ${tentativas} tentativas.`;
     } else {
-        resultadoElement.textContent = `Tentativa ${tentativas}: ${resultado}`;
+        //resultadoElement.textContent = `Tentativa ${tentativas}: ${resultado}`;
         desbloquearFileiras();
         if (tentativas === MAX_TENTATIVAS) {
             resultadoElement.textContent = "Você perdeu! Tente novamente.";

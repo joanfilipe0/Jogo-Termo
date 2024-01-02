@@ -60,3 +60,7 @@ input, button {
 .caixa-incorreta {
     background-color: #ff8a8a; /* Fundo vermelho para indicar a letra incorreta */
 }
+
+.letra-na-posicao-errada {
+    background-color: yellow;
+}
