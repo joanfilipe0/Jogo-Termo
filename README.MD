@@ -9,7 +9,7 @@ Bem-vindo ao Jogo Termo! Este é um jogo de palavras onde você tenta adivinhar 
 Descubra a palavra oculta preenchendo as letras nas caixas.
 O jogo permite que você escolha o número de letras na palavra (entre 3 e 7).
 
-#Como Jogar
+# Como Jogar
 
 1. Iniciar Jogo:
 Escolha o número de letras para a palavra, variando de 3 a 7.
