@@ -8,10 +8,18 @@ function iniciarJogo() {
     const numLetras = document.getElementById("letras").value;
     if (numLetras >= 3 && numLetras <= 7) {
         palavraSecreta = gerarPalavra(numLetras);
-        criarCaixas(numLetras);
         resetarJogo();
+        criarCaixas(numLetras);
+        focarPrimeiraCaixa();
     } else {
         alert("Por favor, escolha um número de letras entre 3 e 7.");
+    }
+}
+
+function focarPrimeiraCaixa() {
+    const primeiraCaixa = document.querySelector(".linha-disponivel .caixa-letra");
+    if (primeiraCaixa) {
+        primeiraCaixa.focus();
     }
 }
 const palavrasPorComprimento = {
@@ -22,6 +30,45 @@ const palavrasPorComprimento = {
     7: ["teclado", "guitarra", "telefone", "quintal", "agulha", "parafus", "chaveir", "ventila", "abridor", "pratele"]
     // Adicione mais palavras conforme necessário
 };
+
+function configurarEntradaAutomatica() {
+    const caixas = document.querySelectorAll('.caixa-letra');
+
+    caixas.forEach((caixa, index, caixasArray) => {
+        caixa.addEventListener('input', (event) => {
+            const valorAtual = event.target.value;
+
+            // Se o valor atual não for vazio, mova o foco para a próxima caixa
+            if (valorAtual !== '' && valorAtual !== ' ') {
+                const proximaCaixa = caixasArray[index + 1];
+                if (proximaCaixa && !proximaCaixa.closest(".linha-bloqueada")) {
+                    proximaCaixa.focus();
+                }
+            }
+        });
+
+        // Adicione um ouvinte de tecla pressionada para voltar à caixa anterior ao apagar
+        caixa.addEventListener('keyup', (event) => {
+            const valorAtual = event.target.value;
+
+            // Se o valor atual for vazio, mova o foco para a caixa anterior
+            if (valorAtual === '' && event.key === 'Backspace') {
+                const caixaAnterior = caixasArray[index - 1];
+                if (caixaAnterior && !caixaAnterior.closest(".linha-bloqueada")) {
+                    caixaAnterior.focus();
+                }
+            }
+        });
+
+        // Adicionar event listener para verificar a palavra ao pressionar Enter
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                console.log("Aqui");
+            }
+        });
+
+    });
+}
 
 function gerarPalavra(numLetras) {
     const palavrasDisponiveis = palavrasPorComprimento[numLetras];
@@ -59,6 +106,7 @@ function criarCaixas(numLetras) {
         caixasElement.appendChild(linha);
     }
     desbloquearFileiras();
+    configurarEntradaAutomatica();
 }
 
 function resetarJogo() {
@@ -72,7 +120,16 @@ function resetarJogo() {
 
 function validarEntrada() {
     const inputElement = document.getElementById("tentativa");
-    inputElement.value = inputElement.value.replace(/[^a-zA-Z]/g, "").toLowerCase();
+    const valorEntrada = inputElement.value.trim(); // Remove espaços no início e no final
+
+    if (!valorEntrada.match(/^[a-zA-Z]+$/)) {
+        alert("Por favor, digite apenas letras e sem espaços.");
+        // Limpar o valor do input
+        inputElement.value = "";
+    } else {
+        // Atualizar o valor do input removendo espaços no início e no final
+        inputElement.value = valorEntrada;
+    }
 }
 
 function verificarPalavra() {
@@ -102,28 +159,28 @@ function verificarPalavra() {
     }
 
     // Colorir as caixas de acordo com a Verificação
-    const caixasAtuais = document.querySelectorAll(".linha-caixas")[tentativas-1].getElementsByClassName("caixa-letra");
+    const caixasAtuais = document.querySelectorAll(".linha-caixas")[tentativas - 1].getElementsByClassName("caixa-letra");
 
     // Verificar se alguma caixa está vazia
     for (let i = 0; i < caixasAtuais.length; i++) {
         if (caixasAtuais[i].value.trim() === "") {
-        tentativas--;
-        alert("Por favor, preencha todas as caixas.");
-        return;
+            tentativas--;
+            alert("Por favor, preencha todas as caixas.");
+            return;
         }
     }
 
     for (let x = 0; x < caixasAtuais.length; x++) {
         const letraAtual = caixasAtuais[x].value;
         const letraCorreta = palavraSecreta[x] === letraAtual;
-    
+
         if (letraCorreta) {
             // Se a letra está correta na posição
             caixasAtuais[x].classList.add("caixa-correta");
         } else {
             // Se a letra está incorreta ou na posição errada
             caixasAtuais[x].classList.add("caixa-incorreta");
-    
+
             if (palavraSecreta.includes(letraAtual)) {
                 // Se a letra está na palavra, mas na posição errada
                 caixasAtuais[x].classList.add("letra-na-posicao-errada");
