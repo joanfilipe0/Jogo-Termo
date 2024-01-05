@@ -33,6 +33,7 @@ const palavrasPorComprimento = {
 
 function configurarEntradaAutomatica() {
     const caixas = document.querySelectorAll('.caixa-letra');
+    let enterPress = false; // Adicione uma variável para controlar se o Enter foi pressionado
 
     caixas.forEach((caixa, index, caixasArray) => {
         caixa.addEventListener('input', (event) => {
@@ -62,8 +63,13 @@ function configurarEntradaAutomatica() {
 
         // Adicionar event listener para verificar a palavra ao pressionar Enter
         document.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                console.log("Aqui");
+            if (event.key === "Enter" && !enterPress) {
+                verificarPalavra()
+                enterPress = true; // Marque que o Enter foi pressionado
+                // Definir um atraso de 1000 milissegundos (1 segundo) antes de redefinir enterPress
+                setTimeout(function () {
+                    enterPress = false;
+                }, 100);
             }
         });
 
