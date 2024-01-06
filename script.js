@@ -22,6 +22,21 @@ function focarPrimeiraCaixa() {
         primeiraCaixa.focus();
     }
 }
+
+function focarProximaCaixa() {
+    const caixasArray = Array.from(document.getElementsByClassName("caixa-letra"));
+    const numColunas = document.getElementById("letras").value;
+
+    // Encontrar a primeira caixa disponível na próxima linha
+    for (let i = numColunas; i < caixasArray.length; i++) {
+        const caixa = caixasArray[i];
+        if (!caixa.closest(".linha-bloqueada") && caixa.value.trim() === '') {
+            caixa.focus();
+            break;  // Termina o loop após focar na primeira caixa disponível
+        }
+    }
+}
+
 const palavrasPorComprimento = {
     3: ["sol", "lua", "mar", "sol", "som", "luz", "cor", "paz", "fim", "sal"],
     4: ["casa", "mala", "fala", "pato", "cama", "roda", "vira", "fogo", "ruim", "alto"],
@@ -38,31 +53,27 @@ function configurarEntradaAutomatica() {
     caixas.forEach((caixa, index, caixasArray) => {
         caixa.addEventListener('input', (event) => {
             const valorAtual = event.target.value;
+            const elementoAtual = event.target;
 
             // Se o valor atual não for vazio, mova o foco para a próxima caixa
             if (valorAtual !== '' && valorAtual !== ' ') {
-                const proximaCaixa = caixasArray[index + 1];
-                if (proximaCaixa && !proximaCaixa.closest(".linha-bloqueada")) {
+                const proximaCaixa = encontrarProximaCaixa(elementoAtual);
+
+                if (proximaCaixa) {
                     proximaCaixa.focus();
-                }
-            }
-        });
-
-        // Adicione um ouvinte de tecla pressionada para voltar à caixa anterior ao apagar
-        caixa.addEventListener('keyup', (event) => {
-            const valorAtual = event.target.value;
-
-            // Se o valor atual for vazio, mova o foco para a caixa anterior
-            if (valorAtual === '' && event.key === 'Backspace') {
-                const caixaAnterior = caixasArray[index - 1];
-                if (caixaAnterior && !caixaAnterior.closest(".linha-bloqueada")) {
-                    caixaAnterior.focus();
                 }
             }
         });
 
         // Adicionar event listener para verificar a palavra ao pressionar Enter
         document.addEventListener("keydown", function (event) {
+
+            const valorAtual = event.target.value;
+            const elementoAtual = event.target;
+
+            // Encontre a posição da caixa atual no array caixasArray
+            const indexAtual = Array.from(caixasArray).indexOf(elementoAtual);
+
             if (event.key === "Enter" && !enterPress) {
                 verificarPalavra()
                 enterPress = true; // Marque que o Enter foi pressionado
@@ -71,9 +82,61 @@ function configurarEntradaAutomatica() {
                     enterPress = false;
                 }, 100);
             }
+
+            // Se a tecla for 'Backspace' e a caixa estiver vazia, mova o foco para a caixa anterior
+            if (event.key === 'Backspace' && valorAtual === '') {
+                // Calcule o índice da caixa anterior
+                const caixaAnteriorIndex = indexAtual - 1;
+                // Vwrifique se o índice calculado é válido
+                const caixaAnterior = caixasArray[caixaAnteriorIndex];
+                if (caixaAnterior && caixaAnterior.closest(".linha-disponivel")) {
+                     // Previna o comportamento padrão para evitar a exclusão do conteúdo da caixa
+                    event.preventDefault();
+                    caixaAnterior.focus();
+                }
+            }
+
+            if (event.key === "Tab") {
+                // Obtenha todas as caixas como um array-like object
+                const caixasArray = document.getElementsByClassName("caixa-letra");
+        
+                // Obtenha o elemento atualmente focado
+                const elementoAtual = document.activeElement;
+        
+                // Encontre a posição da caixa atual no array-like object caixasArray
+                const indexAtual = Array.from(caixasArray).indexOf(elementoAtual);
+        
+                // Calcule o índice da próxima caixa
+                const proximaCaixaIndex = indexAtual + 1;
+        
+                // Verifique se o índice calculado é válido
+                const proximaCaixa = caixasArray[proximaCaixaIndex];
+        
+                // Verifique se a próxima caixa está bloqueada
+                if (proximaCaixa && proximaCaixa.closest(".linha-bloqueada")) {
+                    // Impede o foco na próxima caixa se ela estiver bloqueada
+                    event.preventDefault();
+                }
+            }
+
         });
 
     });
+}
+
+function encontrarProximaCaixa(caixaAtual) {
+    const caixasArray = Array.from(document.getElementsByClassName("caixa-letra"));
+    const index = caixasArray.indexOf(caixaAtual);
+
+    // Encontra a próxima caixa disponível
+    for (let i = index + 1; i < caixasArray.length; i++) {
+        const caixa = caixasArray[i];
+        if (!caixa.closest(".linha-bloqueada") && caixa.value.trim() === '') {
+            return caixa;
+        }
+    }
+
+    return null; // Retorna null se não houver próxima caixa disponível
 }
 
 function gerarPalavra(numLetras) {
@@ -199,6 +262,7 @@ function verificarPalavra() {
     } else {
         //resultadoElement.textContent = `Tentativa ${tentativas}: ${resultado}`;
         desbloquearFileiras();
+        focarProximaCaixa();
         if (tentativas === MAX_TENTATIVAS) {
             resultadoElement.textContent = "Você perdeu! Tente novamente.";
             // Adicione outras ações que desejar após o jogo ser perdido
