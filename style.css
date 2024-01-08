@@ -64,3 +64,19 @@ input, button {
 .letra-na-posicao-errada {
     background-color: yellow;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 80%; /* Ajuste o valor conforme necessário */
+    width: 60vw; /* Utilizando 90% da largura da viewport */
+    max-height: 80vh; /* Ajuste o valor conforme necessário */
+    overflow-y: auto; /* Adiciona uma barra de rolagem vertical se necessário */
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 2;
+}

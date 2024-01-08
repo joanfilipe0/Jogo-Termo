@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Jogo Termo</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <h1>Jogo Termo</h1>
@@ -17,9 +19,25 @@
         <button id="iniciarJogo" onclick="iniciarJogo()">Iniciar Jogo</button>
         <div id="caixas" class="caixas-container"></div>
         <button onclick="verificarPalavra()">Verificar</button>
+        <button onclick="mostrarPopup()">Dúvidas</button>
+
+        <!-- Div para representar o pop-up -->
+        <div id="popup" class="popup">
+            <!-- Conteúdo do pop-up -->
+            <p>Regras do Jogo:</p>
+            <p>1. Escolha o número de letras para a palavra, variando de 3 a 7. Clique no botão "Iniciar Jogo" para começar.</p>
+            <p>2. Após iniciar o jogo, você verá as caixas para inserir suas tentativas. Cada linha representa uma tentativa, e você tem um número limitado de tentativas.</p>
+            <p>3. Depois de preencher as letras em uma linha, clique no botão "Verificar" para verificar sua tentativa.</p>
+            <p>4. As caixas com letras corretas ficarão com fundo verde, letras erradas ficarão com fundo vermelho, caixas amarelas indicam letras corretas, mas na posição errada.</p>
+            <p>5. Se você adivinhar a palavra antes de atingir o número máximo de tentativas, você ganha.</p>
+                <!-- Botão para fechar o pop-up -->
+            <button onclick="fecharPopup()">Fechar</button>
+        </div>
+
         <div id="resultado"></div>
     </section>
 
     <script src="script.js"></script>
 </body>
+
 </html>

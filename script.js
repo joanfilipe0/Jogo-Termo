@@ -285,3 +285,13 @@ function desbloquearFileiras() {
         }
     }
 }
+
+// Função para mostrar o pop-up de Ajuda
+function mostrarPopup() {
+    document.getElementById("popup").style.display = "block";
+}
+
+// Função para fechar o pop-up
+function fecharPopup() {
+    document.getElementById("popup").style.display = "none";
+}
